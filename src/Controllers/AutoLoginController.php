@@ -3,20 +3,15 @@
 namespace Anwar\AutoLogin\Controllers;
 
 use Anwar\AutoLogin\AutoLogin;
-use App\Models\User;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
 class AutoLoginController extends BaseController
 {
-    use DispatchesJobs, ValidatesRequests;
-
     public function generateToken(Request $request){
         $validate = Validator::make($request->all(), [
             'email' => 'required',
@@ -48,7 +43,7 @@ class AutoLoginController extends BaseController
         }
 
         $app_token = $request->app_token;
-        $user = User::where('app_token', $app_token)
+        $user = config('autologin.users_model')->where('app_token', $app_token)
 //            ->where('app_reference', $request->url())
             ->first();
         if ($user) {
