@@ -3,7 +3,6 @@
 namespace Anwar\AutoLogin\Controllers;
 
 use Anwar\AutoLogin\AutoLogin;
-use App\Http\Traits\AuthorizesRequests;
 use App\Models\User;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -16,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AutoLoginController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use DispatchesJobs, ValidatesRequests;
 
     public function generateToken(Request $request){
         $validate = Validator::make($request->all(), [
