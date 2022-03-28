@@ -43,7 +43,7 @@ class AutoLoginController extends BaseController
         }
 
         $app_token = $request->app_token;
-        $user = config('autologin.users_model')->where('app_token', $app_token)
+        $user = (new config('autologin.users_model'))->where('app_token', $app_token)
 //            ->where('app_reference', $request->url())
             ->first();
         if ($user) {
