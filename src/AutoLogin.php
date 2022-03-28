@@ -15,7 +15,9 @@ class AutoLogin
                 'app_token' => Str::random(60),
                 'app_reference' => request()->url(),
             ]);
-            return response()->json([...$user->first(), 'status' => true]);
+            $userObject = $user->first();
+            $userObject->status = true;
+            return response()->json($userObject);
         }
         return response()->json([
             'status' => false,
