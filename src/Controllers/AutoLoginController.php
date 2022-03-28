@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -43,11 +44,11 @@ class AutoLoginController extends BaseController
         }
 
         $app_token = $request->app_token;
-        $user = (new config('autologin.users_model'))->where('app_token', $app_token)
+        $user = DB::table(config('autologin.users_table'))->where('app_token', $app_token)
 //            ->where('app_reference', $request->url())
             ->first();
         if ($user) {
-            $u = auth()->login($user);
+            $u = auth()->loginUsingId($user->id);
             return redirect('dashboard');
         }else{
             return [
