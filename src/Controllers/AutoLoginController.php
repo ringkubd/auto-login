@@ -49,7 +49,7 @@ class AutoLoginController extends BaseController
             ->first();
         if ($user) {
             $u = auth()->loginUsingId($user->id);
-            return redirect('dashboard');
+            return redirect(config('autologin.redirect_to'));
         }else{
             return [
                 'status' => false,

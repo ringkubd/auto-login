@@ -5,5 +5,5 @@
  */
 return [
     'users_table' => 'users',
-    'users_model' => App\Models\User::class
+    'redirect_to' => '/'
 ];
