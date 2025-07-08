@@ -13,9 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table(config('autologin.users_table', 'users'), function (Blueprint $table) {
-            $table->string('app_token');
-            $table->string('app_reference');
+        $tableName = config('autologin.users_table', 'users');
+        Schema::table($tableName, function (Blueprint $table) use ($tableName) {
+            if (!Schema::hasColumn($tableName, 'app_token')) {
+                $table->string('app_token')->nullable()->after('remember_token')->comment('Auto-login app token');
+            }
+            if (!Schema::hasColumn($tableName, 'app_reference')) {
+                $table->string('app_reference')->nullable()->after('app_token')->comment('Auto-login app reference');
+            }
         });
     }
 
@@ -26,6 +31,14 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropColumns(config('autologin.users_table', 'users'), ['app_token', 'app_reference']);
+        $tableName = config('autologin.users_table', 'users');
+        Schema::table($tableName, function (Blueprint $table) use ($tableName) {
+            if (Schema::hasColumn($tableName, 'app_token')) {
+                $table->dropColumn('app_token');
+            }
+            if (Schema::hasColumn($tableName, 'app_reference')) {
+                $table->dropColumn('app_reference');
+            }
+        });
     }
 };
