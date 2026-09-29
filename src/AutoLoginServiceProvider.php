@@ -49,8 +49,11 @@ class AutoLoginServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Automatically apply the package configuration
+        // Automatically apply the package configuration.
+        // Merge under the package key...
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'auto-login');
+        // ...and under the legacy published key for backward compatibility.
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'autologin');
 
         // Register the main class to use with the facade
         $this->app->singleton('auto-login', function () {
